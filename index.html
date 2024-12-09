@@ -1,15 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
+    <title>Boin boin boin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello and welcome :3</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <style>
+        html,
+        body {
+            background: #000;
+            color: #fff;
+            height: 100%;
+            margin: 0;
+            min-height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee {
+            display: block;
+            left: 0;
+            position: absolute;
+            top: 0;
+            border: 1px solid;
+            padding: 20px;
+        }
+
+        img {
+            display: block;
+            width: 100%; 
+            height: auto;
+        }
+
+        .marquee img {
+            max-width: 300px; 
+            max-height: 250px; 
+        }
+    </style>
+    <script>
+        (function ($, window, undefined) {
+            $.fn.marqueeify = function (options) {
+                var settings = $.extend({
+                    horizontal: true,
+                    vertical: true,
+                    speed: 100, // In pixels per second
+                    container: $(this).parent(),
+                    bumpEdge: function () { }
+                }, options);
+
+                return this.each(function () {
+                    var containerWidth, containerHeight, elWidth, elHeight, move, getSizes,
+                        $el = $(this);
+
+                    getSizes = function () {
+                        containerWidth = settings.container.outerWidth();
+                        containerHeight = settings.container.outerHeight();
+                        elWidth = $el.outerWidth();
+                        elHeight = $el.outerHeight();
+
+                    };
+
+                    move = {
+                        right: function () {
+                            $el.animate({
+                                left: (containerWidth - elWidth)
+                            }, {
+                                duration: ((containerWidth / settings.speed) * 1000),
+                                queue: false,
+                                easing: "linear",
+                                complete: function () {
+                                    settings.bumpEdge();
+                                    move.left();
+                                }
+                            });
+                        },
+                        left: function () {
+                            $el.animate({
+                                left: 0
+                            }, {
+                                duration: ((containerWidth / settings.speed) * 1000),
+                                queue: false,
+                                easing: "linear",
+                                complete: function () {
+                                    settings.bumpEdge();
+                                    move.right();
+                                }
+                            });
+                        },
+                        down: function () {
+                            $el.animate({
+                                top: (containerHeight - elHeight)
+                            }, {
+                                duration: ((containerHeight / settings.speed) * 1000),
+                                queue: false,
+                                easing: "linear",
+                                complete: function () {
+                                    settings.bumpEdge();
+                                    move.up();
+                                }
+                            });
+                        },
+                        up: function () {
+                            $el.animate({
+                                top: 0
+                            }, {
+                                duration: ((containerHeight / settings.speed) * 1000),
+                                queue: false,
+                                easing: "linear",
+                                complete: function () {
+                                    settings.bumpEdge();
+                                    move.down();
+                                }
+                            });
+                        }
+                    };
+                    getSizes();
+                    if (settings.horizontal) {
+                        move.right();
+                    }
+                    if (settings.vertical) {
+                        move.down();
+                    }
+
+                    // Make that shit responsive!
+                    $(window).resize(function () {
+                        getSizes();
+                    });
+                });
+            };
+        })(jQuery, window);
+
+        $(document).ready(function () {
+
+            $('.marquee').marqueeify({
+                speed: 300,
+                bumpEdge: function () {
+                    let ele = $('.marquee')
+                    var newColor = "hsl(" + Math.floor(Math.random() * 360) + ", 100%, 50%)";
+                    var newFrameColor = "hsl(" + Math.floor(Math.random() * 360) + ", 100%, 50%)";
+                    $('.marquee').css('border-color', newFrameColor);
+                }
+            });
+        });
+    </script>
 </head>
+
 <body>
-    <h1>Welcome to my random pictures and goofy thoughts!</h1>
-    <p>\What’s in Here?</p>
-    <p>Silly Pics: Weird, funny, and random images of stuff I like (or just think is funny).</p>
+    <div id="shadowBox">
+        <h3 class="rainbow">BOIN BOIN BOIN</h3>
+    </div>
+    <div class="marquee">
+        <!-- Replace the SVG with an image element for the QR code -->
+        <img src="erhemnigga.jpg" alt="QR Code">
+    </div>
 </body>
+
 </html>
